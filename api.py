@@ -17,11 +17,12 @@ class Cookie(Base):
 
     """Docstring for CreateCookie2. """
 
-    def __init__(self, username="", passwd=""):
+    def __init__(self, username="", passwd="", rkey=""):
         """TODO: to be defined1. """
         self.url = LOGIN
         self.username = username
-        self.passwd = self.get_passwd(passwd)
+        self.passwd = passwd
+        self.rkey = rkey
         self._cookies = None
 
     def get_headers(self):
@@ -38,8 +39,21 @@ class Cookie(Base):
         return r
 
     def get_passwd(self, raw_passwd):
-        # TODO: 这是一个密码加密的地方，貌似是RSA, 需要进一步解析下
-        return ""
+        # TODO: 这是一个密码加密的地方，貌似是MD5
+        r = requests.get("http://login.renren.com/ajax/getEncryptKey").text
+        rr = json.loads(r)
+        self.rkey = rr["rkey"]
+        e = 65536
+        n = int(rr["n"], 16)
+        from rsa.key import PublicKey
+        from rsa import encrypt
+        from binascii import b2a_hex
+        p = PublicKey(n, e)
+        message = "1987082611"
+        zz = encrypt(message, p)
+        print b2a_hex(zz)
+        #return b2a_hex(zz)
+        return "386d2149790cab465d161f8b237628cdf5923a463ec312e20a83734f62e39f89"
 
     def get_data(self):
         d = {
@@ -50,9 +64,11 @@ class Cookie(Base):
             "key_id": "1",
             "captcha_type": "web_login",
             "password": self.passwd,
-            "rkey": "cc18b4b05d391ed81f65e54585eb72a7",
+            # "rkey": "cc18b4b05d391ed81f65e54585eb72a7",
+            "rkey": self.rkey,
             "f": "http%3A%2F%2Fwww.renren.com%2F222445084",
         }
+        print d
         return d
 
     def get_content(self):

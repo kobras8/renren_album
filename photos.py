@@ -41,8 +41,8 @@ def save_file(title, url, sub_folder):
                 break
 
 
-def main(username, passwd):
-    cookies_obj = Cookie(username=username, passwd=passwd)
+def main(username, passwd, rkey):
+    cookies_obj = Cookie(username=username, passwd=passwd, rkey=rkey)
     for sub_folder, album_link in Albumns(cookies_obj=cookies_obj).get():
         create_folder(sub_folder)
         r_obj = Photo(cookies_obj=cookies_obj, url=album_link)
@@ -54,4 +54,6 @@ def main(username, passwd):
 
 
 if __name__ == '__main__':
-    main("xxxx@163.com", "")
+    main("xxxx@163.com",
+         "加密后的password",
+         "rkey")
