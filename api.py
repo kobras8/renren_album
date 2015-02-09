@@ -150,7 +150,7 @@ class Photo(Albumns):
         raw = self.get_content()
         raw = json.loads(raw)["list"]
         url = map(lambda x: x["largeUrl"], raw)
-        name = map(lambda x: x["originTitle"], raw)
+        name = map(lambda x: x.get("originTitle", "unname"), raw)
 
         def do_filter(x):
             if not x.split("/")[-1].startswith("p_"):
