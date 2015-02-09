@@ -6,7 +6,8 @@ import re
 
 import requests
 
-from renren_pic.base import Base, BaseWithCookie
+from renren_album.base import Base, BaseWithCookie
+from renren_album.encrypt import encryptString
 
 REG = re.compile("'albumList': (.*),")
 LOGIN = ("http://www.renren.com/ajaxLogin/login"
@@ -17,12 +18,11 @@ class Cookie(Base):
 
     """Docstring for CreateCookie2. """
 
-    def __init__(self, username="", passwd="", rkey=""):
+    def __init__(self, username="", passwd=""):
         """TODO: to be defined1. """
         self.url = LOGIN
         self.username = username
-        self.passwd = passwd
-        self.rkey = rkey
+        self.passwd = self.get_passwd(passwd)
         self._cookies = None
 
     def get_headers(self):
@@ -43,17 +43,9 @@ class Cookie(Base):
         r = requests.get("http://login.renren.com/ajax/getEncryptKey").text
         rr = json.loads(r)
         self.rkey = rr["rkey"]
-        e = 65536
-        n = int(rr["n"], 16)
-        from rsa.key import PublicKey
-        from rsa import encrypt
-        from binascii import b2a_hex
-        p = PublicKey(n, e)
-        message = "1987082611"
-        zz = encrypt(message, p)
-        print b2a_hex(zz)
-        #return b2a_hex(zz)
-        return "386d2149790cab465d161f8b237628cdf5923a463ec312e20a83734f62e39f89"
+        n = rr["n"]
+        e = "10001"
+        return encryptString(e, n, raw_passwd)
 
     def get_data(self):
         d = {
@@ -64,11 +56,9 @@ class Cookie(Base):
             "key_id": "1",
             "captcha_type": "web_login",
             "password": self.passwd,
-            # "rkey": "cc18b4b05d391ed81f65e54585eb72a7",
             "rkey": self.rkey,
             "f": "http%3A%2F%2Fwww.renren.com%2F222445084",
         }
-        print d
         return d
 
     def get_content(self):

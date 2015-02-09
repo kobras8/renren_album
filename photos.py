@@ -3,19 +3,19 @@
 
 import time
 import os
+import sys
 
 import requests
 from requests.exceptions import Timeout
 
-from renren_pic.api import Cookie, Photo, Albumns
+from renren_album.api import Cookie, Photo, Albumns
 
-ROOT = u"/Users/kobras/Pictures/相册/人人网/"
 RETRY_NUM = 5
 
 
-def create_folder(sub_folder):
+def create_folder(sub_folder, root_folder):
     try:
-        folder = os.path.join(ROOT, sub_folder)
+        folder = os.path.join(root_folder, sub_folder)
         print u"创建目录{}".format(folder)
         os.makedirs(folder)
     except Exception as e:
@@ -41,10 +41,10 @@ def save_file(title, url, sub_folder):
                 break
 
 
-def main(username, passwd, rkey):
-    cookies_obj = Cookie(username=username, passwd=passwd, rkey=rkey)
+def main(username, passwd, root_folder):
+    cookies_obj = Cookie(username=username, passwd=passwd)
     for sub_folder, album_link in Albumns(cookies_obj=cookies_obj).get():
-        create_folder(sub_folder)
+        create_folder(sub_folder, root_folder)
         r_obj = Photo(cookies_obj=cookies_obj, url=album_link)
         for title, image_link in r_obj.get():
             try:
@@ -54,6 +54,5 @@ def main(username, passwd, rkey):
 
 
 if __name__ == '__main__':
-    main("xxxx@163.com",
-         "加密后的password",
-         "rkey")
+    username, passwd, root_folder = sys.argv[1:]
+    main(username, passwd, root_folder)
