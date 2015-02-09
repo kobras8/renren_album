@@ -53,6 +53,21 @@ def main(username, passwd, root_folder):
                 print e
 
 
+def add_path():
+    package_path = os.path.join(os.path.abspath(__file__), "../..")
+    sys.path.append(package_path)
+
+
+def print_usage():
+    print """Usage:
+    python2.7 photos.py USER_EMAIL PASSWORD FOLDER
+    """
+    sys.exit()
+
+
 if __name__ == '__main__':
+    if len(sys.argv) != 4:
+        print_usage()
+    add_path()
     username, passwd, root_folder = sys.argv[1:]
     main(username, passwd, root_folder)
