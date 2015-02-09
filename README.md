@@ -3,6 +3,10 @@
 
 HOWTO:
 python photo.py USER_EMAIL PASSWORD FOLDER
-USER_EMAIL 是登陆的账号
-PASSWORD 是登录密码
-FOLDER 是下载图片的目录
+
+
+`USER_EMAIL` 是登陆的账号
+
+`PASSWORD` 是登录密码
+
+`FOLDER` 是下载图片的目录
