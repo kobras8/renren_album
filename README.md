@@ -4,7 +4,7 @@
 
 HOWTO:
 
-    python photo.py USER_EMAIL PASSWORD FOLDER
+    python photos.py USER_EMAIL PASSWORD FOLDER
 
 
 * `USER_EMAIL` 是登陆的账号
