@@ -6,8 +6,8 @@ import re
 
 import requests
 
-from renren_album.base import Base, BaseWithCookie
-from renren_album.encrypt import encryptString
+from base import Base, BaseWithCookie
+from encrypt import encryptString
 
 REG = re.compile("'albumList': (.*),")
 LOGIN = ("http://www.renren.com/ajaxLogin/login"

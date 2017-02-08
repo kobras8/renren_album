@@ -8,7 +8,7 @@ import sys
 import requests
 from requests.exceptions import Timeout
 
-from renren_album.api import Cookie, Photo, Albumns
+from api import Cookie, Photo, Albumns
 
 RETRY_NUM = 5
 
