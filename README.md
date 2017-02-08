@@ -4,11 +4,10 @@
 
 HOWTO:
 
-    python photos.py USER_EMAIL PASSWORD FOLDER
+* `virtualenv venv`
 
+* `source venv/bin/activate`
 
-* `USER_EMAIL` 是登陆的账号
+* `pip install -r requirements.txt`
 
-* `PASSWORD` 是登录密码
-
-* `FOLDER` 是下载图片的目录
+* `python photo.py EMAIL PASSWORD`

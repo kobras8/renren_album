@@ -13,6 +13,9 @@ from api import Cookie, Photo, Albumns
 RETRY_NUM = 5
 
 
+DEFAULT_FOLDER = 'images'
+
+
 def create_folder(sub_folder, root_folder):
     try:
         folder = os.path.join(root_folder, sub_folder)
@@ -41,7 +44,7 @@ def save_file(title, url, sub_folder, root_folder):
                 break
 
 
-def main(username, passwd, root_folder):
+def main(username, passwd, root_folder=DEFAULT_FOLDER):
     cookies_obj = Cookie(username=username, passwd=passwd)
     for sub_folder, album_link in Albumns(cookies_obj=cookies_obj).get():
         create_folder(sub_folder, root_folder)
@@ -60,14 +63,14 @@ def add_path():
 
 def print_usage():
     print """Usage:
-    python2.7 photos.py USER_EMAIL PASSWORD FOLDER
+    python2.7 photos.py USER_EMAIL PASSWORD
     """
     sys.exit()
 
 
 if __name__ == '__main__':
-    if len(sys.argv) != 4:
+    if len(sys.argv) != 3:
         print_usage()
     add_path()
-    username, passwd, root_folder = sys.argv[1:]
-    main(username, passwd, root_folder)
+    username, passwd = sys.argv[1:]
+    main(username, passwd)
